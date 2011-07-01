@@ -21,8 +21,10 @@ while true; do
   PHOTOS=`curl $U 2>/dev/null | grep '<a name="photo' | cut -d'"' -f2 | cut -b 6-`
 
   for I in $PHOTOS; do
-    LARGESTURL=`printf $PICURL $USER $I`
-    LARGEST=`curl -L "$LARGESTURL" 2>/dev/null | grep -B1 'Download the' | head -n1 | cut -d'"' -f2`
-    wget -c $LARGEST
+    LARGESTPAGE=`printf $PICURL $USER $I`
+    echo $LARGESTPAGE >&2
+    LARGESTCDN=`curl -A $I -L "$LARGESTPAGE" 2>/dev/null | grep -B1 'Download the' | head -n1 | cut -d'"' -f2`
+    echo $LARGESTCDN >&2
+    wget -c $LARGESTCDN
   done
 done
