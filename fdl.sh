@@ -16,5 +16,7 @@ while true; do
   STATUS=`curl -I $U 2>/dev/null | head -n1 | cut -d' ' -f2`
   [ $STATUS = 302 ] && break
 
+  curl $U 2>/dev/null | grep '<a name="photo' | cut -d'"' -f2 | cut -b 6-
+
   N=`dc  -e "$N 1 + p"`
 done
