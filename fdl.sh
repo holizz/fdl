@@ -19,5 +19,5 @@ while true; do
 
   curl $U 2>/dev/null | grep '<a name="photo' | cut -d'"' -f2 | cut -b 6-
 
-  N=`dc  -e "$N 1 + p"`
+  N=`expr $N + 1`
 done
