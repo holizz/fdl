@@ -16,11 +16,13 @@ while true; do
   U=`printf $URL $USER $N`
   STATUS=`curl -I $U 2>/dev/null | head -n1 | cut -d' ' -f2`
   [ $STATUS = 302 ] && break
-  echo $U
+  echo $U >&2
 
   PHOTOS=`curl $U 2>/dev/null | grep '<a name="photo' | cut -d'"' -f2 | cut -b 6-`
 
   for I in $PHOTOS; do
-    echo `printf $PICURL $USER $I`
+    LARGESTURL=`printf $PICURL $USER $I`
+    LARGEST=`curl -L "$LARGESTURL" 2>/dev/null | grep -B1 'Download the' | head -n1 | cut -d'"' -f2`
+    wget -c $LARGEST
   done
 done
